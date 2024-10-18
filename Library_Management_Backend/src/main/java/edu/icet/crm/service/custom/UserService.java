@@ -12,4 +12,5 @@ public interface UserService {
     List<User> getAll();
     List<User> getAllByJoinedDate(LocalDate localDate);
     boolean validateUserLogin(String username,String password);
+    int getUserVisitedCount(LocalDate localDate);
 }

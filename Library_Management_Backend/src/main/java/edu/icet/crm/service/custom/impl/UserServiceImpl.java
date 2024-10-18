@@ -8,12 +8,14 @@ import edu.icet.crm.repository.UserLoginActivityRepository;
 import edu.icet.crm.repository.UserRepository;
 import edu.icet.crm.service.custom.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserLoginActivityRepository userLoginActivityRepository;
@@ -75,5 +77,10 @@ public class UserServiceImpl implements UserService {
             userLoginActivityRepository.save(new UserLoginActivity(null,username,LocalDate.now()));
             return true;
         }else return false;
+    }
+
+    @Override
+    public int getUserVisitedCount(LocalDate localDate) {
+        return userLoginActivityRepository.findByDate(localDate).size();
     }
 }
