@@ -6,14 +6,8 @@ import edu.icet.crm.util.ServiceType;
 public class ServiceFactory {
     private static ServiceFactory instane;
     private ServiceFactory(){}
-    public ServiceFactory getInstance(){
+    public static ServiceFactory getInstance(){
         return instane==null?instane=new ServiceFactory():instane;
     }
 
-    public <T>T getService(ServiceType serviceType){
-        switch (serviceType){
-            case ADMIN:return (T) new AdminServiceImpl();
-        }
-        return null;
-    }
 }
