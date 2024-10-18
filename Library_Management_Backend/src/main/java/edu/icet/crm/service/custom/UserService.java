@@ -10,6 +10,7 @@ public interface UserService {
     void update(User user);
     void delete(String username);
     List<User> getAll();
+    List<User> getFirstFive();
     List<User> getAllByJoinedDate(LocalDate localDate);
     boolean validateUserLogin(String username,String password);
     int getUserVisitedCount(LocalDate localDate);

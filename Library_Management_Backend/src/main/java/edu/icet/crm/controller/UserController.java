@@ -1,5 +1,4 @@
 package edu.icet.crm.controller;
-
 import edu.icet.crm.dto.User;
 import edu.icet.crm.service.custom.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +30,11 @@ public class UserController {
     @GetMapping("/get-all")
     public List<User> getAll(){
         return userService.getAll();
+    }
+
+    @GetMapping("/get-first-5")
+    public List<User> getFirstFive(){
+        return userService.getFirstFive();
     }
 
     @GetMapping("/get-by-joinedDate/{localDate}")

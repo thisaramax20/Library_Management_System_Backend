@@ -8,6 +8,7 @@ import edu.icet.crm.repository.UserLoginActivityRepository;
 import edu.icet.crm.repository.UserRepository;
 import edu.icet.crm.service.custom.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -60,6 +61,15 @@ public class UserServiceImpl implements UserService {
         ArrayList<User> users = new ArrayList<>();
         all.forEach(user -> users.add(mapper.convertValue(user,User.class)));
         return users;
+    }
+
+    @Override
+    public List<User> getFirstFive() {
+        List<edu.icet.crm.entity.User> users = userRepository.findAll(PageRequest.of(0, 5))
+                .getContent();
+        ArrayList<User> users1 = new ArrayList<>();
+        users.forEach(user -> users1.add(mapper.convertValue(user,User.class)));
+        return users1;
     }
 
     @Override
