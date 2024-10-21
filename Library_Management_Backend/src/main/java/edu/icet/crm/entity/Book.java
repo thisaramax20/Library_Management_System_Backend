@@ -17,7 +17,6 @@ public class Book {
     private Integer id;
     private String bookCode;
     private String title;
-    private String author;
     private String isbn;
     private String category;
     private String state;
@@ -25,4 +24,7 @@ public class Book {
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] imageData;
+    @ManyToOne
+    @JoinColumn(name = "authorId")
+    private Author author;
 }

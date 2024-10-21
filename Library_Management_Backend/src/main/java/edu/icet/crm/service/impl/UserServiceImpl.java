@@ -1,12 +1,11 @@
-package edu.icet.crm.service.custom.impl;
+package edu.icet.crm.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.icet.crm.dto.Admin;
 import edu.icet.crm.dto.User;
 import edu.icet.crm.entity.UserLoginActivity;
 import edu.icet.crm.repository.UserLoginActivityRepository;
 import edu.icet.crm.repository.UserRepository;
-import edu.icet.crm.service.custom.UserService;
+import edu.icet.crm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -39,11 +38,8 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         edu.icet.crm.entity.User byUsername = userRepository.findByUsername(user.getUsername());
         if (byUsername!=null){
-            byUsername.setDob(user.getDob());
-            byUsername.setName(user.getName());
-            byUsername.setNic(user.getNic());
-            byUsername.setAddress(user.getAddress());
-            byUsername.setPassword(user.getPassword());
+            user.setId(byUsername.getId());
+            userRepository.save(mapper.convertValue(user,edu.icet.crm.entity.User.class));
         }
     }
 
@@ -74,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllByJoinedDate(LocalDate localDate) {
-        List<edu.icet.crm.entity.User> all = userRepository.findByJoinedDate(localDate);
+        List<edu.icet.crm.entity.User> all = userRepository.findByJoinedOn(localDate);
         ArrayList<User> users = new ArrayList<>();
         all.forEach(user -> users.add(mapper.convertValue(user,User.class)));
         return users;

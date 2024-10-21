@@ -1,6 +1,6 @@
 package edu.icet.crm.controller;
 import edu.icet.crm.dto.User;
-import edu.icet.crm.service.custom.impl.UserServiceImpl;
+import edu.icet.crm.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserController {
     private final UserServiceImpl userService;
 

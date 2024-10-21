@@ -1,4 +1,4 @@
-package edu.icet.crm.service.custom;
+package edu.icet.crm.service;
 
 import edu.icet.crm.dto.User;
 

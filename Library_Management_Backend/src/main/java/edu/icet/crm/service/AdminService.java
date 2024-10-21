@@ -1,11 +1,10 @@
-package edu.icet.crm.service.custom;
+package edu.icet.crm.service;
 
 import edu.icet.crm.dto.Admin;
-import edu.icet.crm.service.SuperService;
 
 import java.util.List;
 
-public interface AdminService extends SuperService {
+public interface AdminService {
     void save(Admin admin);
     void update(Admin admin);
     void delete(String username);

@@ -1,9 +1,9 @@
-package edu.icet.crm.service.custom.impl;
+package edu.icet.crm.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.crm.dto.Admin;
 import edu.icet.crm.repository.AdminRepository;
-import edu.icet.crm.service.custom.AdminService;
+import edu.icet.crm.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +33,8 @@ public class AdminServiceImpl implements AdminService {
     public void update(Admin admin) {
         edu.icet.crm.entity.Admin byUsername = adminRepository.findByUsername(admin.getUsername());
         if (byUsername!=null){
-            byUsername.setDob(admin.getDob());
-            byUsername.setName(admin.getName());
-            byUsername.setNic(admin.getNic());
-            byUsername.setAddress(admin.getAddress());
-            byUsername.setPassword(admin.getPassword());
+            admin.setId(byUsername.getId());
+            adminRepository.save(mapper.convertValue(admin,edu.icet.crm.entity.Admin.class));
         }
     }
 
