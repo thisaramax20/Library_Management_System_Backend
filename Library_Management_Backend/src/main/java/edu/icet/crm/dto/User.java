@@ -20,5 +20,6 @@ public class User {
     private String nic;
     private String guardianNic;
     private String password;
+    private String email;
     private LocalDate joinedOn;
 }

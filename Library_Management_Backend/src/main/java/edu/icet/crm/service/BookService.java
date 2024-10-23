@@ -8,4 +8,6 @@ public interface BookService {
     void update(Book book);
     void delete(String bookCode);
     List<Book> getAll();
+    List<Book> getByCategory(String category);
+    List<Book> getByState(String state);
 }

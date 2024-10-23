@@ -27,7 +27,7 @@ public class BookServiceImpl implements BookService {
         edu.icet.crm.entity.Book book1 = mapper.convertValue(book, edu.icet.crm.entity.Book.class);
         Integer highestId = bookRepository.getHighestId();
         if (highestId != null) {
-            book1.setBookCode("BK-" + ++highestId);
+            book1.setBookCode("BK-" + (highestId+1));
         } else {
             book1.setBookCode("BK-" + 1);
         }
@@ -38,7 +38,6 @@ public class BookServiceImpl implements BookService {
             if(byAuthorId.getBooks()==null) byAuthorId.setBooks(new HashSet<>());
             byAuthorId.getBooks().add(book1);
             authorRepository.save(byAuthorId);
-            bookRepository.save(book1);
         }
         return true;
     }
@@ -67,6 +66,28 @@ public class BookServiceImpl implements BookService {
     public List<Book> getAll() {
         List<Book> books = new ArrayList<>();
         bookRepository.findAll().forEach(book -> {
+            Book book1 = mapper.convertValue(book, Book.class);
+            book1.setAuthorId(book.getAuthor().getAuthorId());
+            books.add(book1);
+        });
+        return books;
+    }
+
+    @Override
+    public List<Book> getByCategory(String category) {
+        ArrayList<Book> books = new ArrayList<>();
+        bookRepository.findByCategory(category).forEach(book -> {
+            Book book1 = mapper.convertValue(book, Book.class);
+            book1.setAuthorId(book.getAuthor().getAuthorId());
+            books.add(book1);
+        });
+        return books;
+    }
+
+    @Override
+    public List<Book> getByState(String state) {
+        ArrayList<Book> books = new ArrayList<>();
+        bookRepository.findByState(state).forEach(book -> {
             Book book1 = mapper.convertValue(book, Book.class);
             book1.setAuthorId(book.getAuthor().getAuthorId());
             books.add(book1);

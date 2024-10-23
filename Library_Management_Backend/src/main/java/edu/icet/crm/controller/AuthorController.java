@@ -33,4 +33,9 @@ public class AuthorController {
     public void deleteById(@PathVariable String id){
         authorService.delete(id);
     }
+
+    @PutMapping("/update")
+    public void update(@RequestBody Author author){
+        authorService.update(author);
+    }
 }

@@ -6,22 +6,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Admin {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId","bookId"}))
+public class PreOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(unique = true)
-    private String username;
-    private String name;
-    private String nic;
-    private String address;
-    private LocalDate dob;
-    private String password;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "bookId")
+    private Book book;
+    private LocalDateTime orderTime;
 }

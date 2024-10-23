@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         if (maxId != null) {
             user1.setUsername("US-" + ++maxId);
         } else {
-            user1.setUsername("AD-" + 1);
+            user1.setUsername("US-" + 1);
         }
         userRepository.save(user1);
     }
