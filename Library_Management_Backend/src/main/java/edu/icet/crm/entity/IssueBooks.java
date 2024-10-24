@@ -20,6 +20,7 @@ public class IssueBooks {
     private LocalDate expectedOn;
     private String status;
     private Double fine;
+    private String fineStatus;
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_Id")

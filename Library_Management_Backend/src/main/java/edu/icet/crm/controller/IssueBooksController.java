@@ -3,10 +3,9 @@ package edu.icet.crm.controller;
 import edu.icet.crm.dto.IssueBooks;
 import edu.icet.crm.service.IssueBooksService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +16,25 @@ public class IssueBooksController {
     @PostMapping("/save")
     public void save(@RequestBody IssueBooks books){
         issueBooksService.save(books);
+    }
+
+    @GetMapping("/get-ongoing")
+    public List<IssueBooks> getOngoing(){
+        return issueBooksService.getAllOngoingRecords();
+    }
+
+    @GetMapping("/get-all")
+    public List<IssueBooks> getAll(){
+        return issueBooksService.getAll();
+    }
+
+    @PostMapping("/mark-received")
+    public void markReceived(@RequestBody IssueBooks books){
+        issueBooksService.markRecordComplete(books);
+    }
+
+    @DeleteMapping("/delete")
+    public void delete(@RequestBody IssueBooks books){
+        issueBooksService.deleteIssueBookRecord(books);
     }
 }

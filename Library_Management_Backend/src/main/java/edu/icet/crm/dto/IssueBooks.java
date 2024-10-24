@@ -12,10 +12,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IssueBooks {
-    private Integer number;
     private LocalDate issuedOn;
     private LocalDate expectedOn;
     private String status;
+    private String fineStatus;
     private Double fine;
     private String userId;
     private String bookId;
