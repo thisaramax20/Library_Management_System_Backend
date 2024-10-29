@@ -53,4 +53,9 @@ public class BookController {
     public List<Book> getTopFive(){
         return bookService.getTopChoiceFive();
     }
+
+    @GetMapping("/get-by-id/{id}")
+    public Book getById(@PathVariable String id){
+        return bookService.getByBookId(id);
+    }
 }

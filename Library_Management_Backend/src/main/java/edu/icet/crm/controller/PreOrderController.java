@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/pre-order")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PreOrderController {
     private final PreOrderService preOrderService;
 
@@ -26,5 +27,10 @@ public class PreOrderController {
     @GetMapping("/get-all")
     public List<PreOrder> getAll(){
         return preOrderService.getAll();
+    }
+
+    @GetMapping("/get-by-userId/{id}")
+    public List<PreOrder> getByUser(@PathVariable String id){
+        return preOrderService.getByUserId(id);
     }
 }

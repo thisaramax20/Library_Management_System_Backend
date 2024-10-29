@@ -12,4 +12,5 @@ public interface BookService {
     List<Book> getByCategory(String category);
     List<Book> getByState(String state);
     List<Book> getTopChoiceFive();
+    Book getByBookId(String id);
 }

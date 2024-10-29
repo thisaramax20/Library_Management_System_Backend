@@ -117,4 +117,11 @@ public class BookServiceImpl implements BookService {
                 forEach(book -> books.add(mapper.convertValue(book, Book.class)));
         return books;
     }
+
+    @Override
+    public Book getByBookId(String id) {
+        edu.icet.crm.entity.Book byBookCode = bookRepository.findByBookCode(id);
+        if (byBookCode!=null) return mapper.convertValue(byBookCode,Book.class);
+        return null;
+    }
 }

@@ -57,4 +57,16 @@ public class PreOrderServiceImpl implements PreOrderService {
                 findByUserIdAndBookId(byUsername.getId(), byBookCode.getId());
         if (byUserIdAndBookId!=null) preOrderRepository.delete(byUserIdAndBookId);
     }
+
+    @Override
+    public List<PreOrder> getByUserId(String userId) {
+        User byUsername = userRepository.findByUsername(userId);
+        List<edu.icet.crm.entity.PreOrder> byUserId = preOrderRepository.findByUserId(byUsername.getId());
+        ArrayList<PreOrder> preOrders = new ArrayList<>();
+        byUserId.forEach(preOrder -> {
+            preOrders.add(new PreOrder(preOrder.getId(),preOrder.getUser().getUsername(),
+                    preOrder.getBook().getBookCode(),preOrder.getOrderTime()));
+        });
+        return preOrders;
+    }
 }

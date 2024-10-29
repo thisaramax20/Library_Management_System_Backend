@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EmailSending {
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     public void sendPreOrderEmail(String sender,String title){
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();

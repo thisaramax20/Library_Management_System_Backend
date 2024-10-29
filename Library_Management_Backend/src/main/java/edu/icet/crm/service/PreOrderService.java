@@ -8,4 +8,5 @@ public interface PreOrderService {
     void save(PreOrder preOrder);
     List<PreOrder> getAll();
     void delete(String userId,String bookId);
+    List<PreOrder> getByUserId(String userId);
 }

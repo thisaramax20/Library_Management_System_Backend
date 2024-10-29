@@ -99,4 +99,11 @@ public class UserServiceImpl implements UserService {
     public int getUserVisitedCount(LocalDate localDate) {
         return userLoginActivityRepository.findByDate(localDate).size();
     }
+
+    @Override
+    public User getByUserName(String username) {
+        edu.icet.crm.entity.User byUsername = userRepository.findByUsername(username);
+        if (byUsername!=null) return mapper.convertValue(byUsername,User.class);
+        return null;
+    }
 }

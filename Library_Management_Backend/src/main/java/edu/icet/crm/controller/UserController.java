@@ -43,4 +43,9 @@ public class UserController {
     public List<User> getByJoinedDate(@PathVariable LocalDate localDate){
         return userService.getAllByJoinedDate(localDate);
     }
+
+    @GetMapping("/get-by-username/{username}")
+    public User getByUsername(@PathVariable String username){
+        return userService.getByUserName(username);
+    }
 }
