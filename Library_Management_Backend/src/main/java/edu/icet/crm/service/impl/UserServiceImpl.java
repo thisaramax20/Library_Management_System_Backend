@@ -3,6 +3,7 @@ package edu.icet.crm.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.crm.dto.User;
 import edu.icet.crm.entity.UserLoginActivity;
+import edu.icet.crm.repository.IssueBooksRepository;
 import edu.icet.crm.repository.UserLoginActivityRepository;
 import edu.icet.crm.repository.UserRepository;
 import edu.icet.crm.service.UserService;
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserLoginActivityRepository userLoginActivityRepository;
+    private final IssueBooksRepository issueBooksRepository;
     private final ObjectMapper mapper;
 
     @Override
@@ -55,7 +57,11 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         List<edu.icet.crm.entity.User> all = userRepository.findAll();
         ArrayList<User> users = new ArrayList<>();
-        all.forEach(user -> users.add(mapper.convertValue(user,User.class)));
+        all.forEach(user -> {
+            User user1 = mapper.convertValue(user, User.class);
+            user1.setCountOfBooksIssued(issueBooksRepository.countByUser(user));
+            users.add(user1);
+        });
         return users;
     }
 
@@ -64,7 +70,11 @@ public class UserServiceImpl implements UserService {
         List<edu.icet.crm.entity.User> users = userRepository.findAll(PageRequest.of(0, 5))
                 .getContent();
         ArrayList<User> users1 = new ArrayList<>();
-        users.forEach(user -> users1.add(mapper.convertValue(user,User.class)));
+        users.forEach(user -> {
+            User user1 = mapper.convertValue(user, User.class);
+            user1.setCountOfBooksIssued(issueBooksRepository.countByUser(user));
+            users1.add(user1);
+        });
         return users1;
     }
 

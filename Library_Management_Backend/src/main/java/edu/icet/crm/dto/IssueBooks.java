@@ -19,4 +19,6 @@ public class IssueBooks {
     private Double fine;
     private String userId;
     private String bookId;
+    private String userName;
+    private String bookTitle;
 }

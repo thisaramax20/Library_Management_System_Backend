@@ -19,4 +19,5 @@ public class Book {
     private Integer countOfBorrowed;
     private byte[] imageData;
     private String authorId;
+    private String authorName;
 }

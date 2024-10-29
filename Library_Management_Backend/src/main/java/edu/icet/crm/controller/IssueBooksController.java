@@ -2,16 +2,22 @@ package edu.icet.crm.controller;
 
 import edu.icet.crm.dto.IssueBooks;
 import edu.icet.crm.service.IssueBooksService;
+import edu.icet.crm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/issue-books")
+@CrossOrigin
 public class IssueBooksController {
     private final IssueBooksService issueBooksService;
+    private final UserService userService;
 
     @PostMapping("/save")
     public void save(@RequestBody IssueBooks books){
@@ -28,6 +34,11 @@ public class IssueBooksController {
         return issueBooksService.getAll();
     }
 
+    @GetMapping("/get-overdue")
+    public List<IssueBooks> getAllOverdue(){
+        return issueBooksService.getAllOverdueRecords();
+    }
+
     @PostMapping("/mark-received")
     public void markReceived(@RequestBody IssueBooks books){
         issueBooksService.markRecordComplete(books);
@@ -36,5 +47,14 @@ public class IssueBooksController {
     @DeleteMapping("/delete")
     public void delete(@RequestBody IssueBooks books){
         issueBooksService.deleteIssueBookRecord(books);
+    }
+
+    @GetMapping("/get-counts")
+    public Map<String,Integer> getOngoingCount(){
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("borrowed",issueBooksService.countOfOngoing());
+        map.put("overdue",issueBooksService.countOfOverdue());
+        map.put("totalVisitors", userService.getUserVisitedCount(LocalDate.now()));
+        return map;
     }
 }

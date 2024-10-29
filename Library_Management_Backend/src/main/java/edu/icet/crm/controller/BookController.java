@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book")
+@CrossOrigin
 public class BookController {
     private final BookService bookService;
 
@@ -21,6 +22,11 @@ public class BookController {
     @GetMapping("/get-all")
     public List<Book> getAll(){
         return bookService.getAll();
+    }
+
+    @GetMapping("/get-first-5")
+    public List<Book> getFirstFive(){
+        return bookService.getFirstFive();
     }
 
     @PutMapping("/update")
@@ -41,5 +47,10 @@ public class BookController {
     @GetMapping("/get-by-state/{state}")
     public List<Book> getByState(@PathVariable String state){
         return bookService.getByState(state);
+    }
+
+    @GetMapping("/get-top-five")
+    public List<Book> getTopFive(){
+        return bookService.getTopChoiceFive();
     }
 }

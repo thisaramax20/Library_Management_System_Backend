@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     private final UserServiceImpl userService;
 
@@ -41,10 +42,5 @@ public class UserController {
     @GetMapping("/get-by-joinedDate/{localDate}")
     public List<User> getByJoinedDate(@PathVariable LocalDate localDate){
         return userService.getAllByJoinedDate(localDate);
-    }
-
-    @GetMapping("/get-count-visited/{localDate}")
-    public int getCountVisited(@PathVariable LocalDate localDate){
-        return userService.getUserVisitedCount(localDate);
     }
 }

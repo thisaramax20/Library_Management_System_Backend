@@ -6,6 +6,7 @@ import edu.icet.crm.dto.Book;
 import edu.icet.crm.repository.AuthorRepository;
 import edu.icet.crm.service.AuthorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,6 +49,15 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> getAll() {
         ArrayList<Author> authors = new ArrayList<>();
         authorRepository.findAll().forEach(author -> {
+            authors.add(mapper.convertValue(author, Author.class));
+        });
+        return authors;
+    }
+
+    @Override
+    public List<Author> getFirstFive() {
+        ArrayList<Author> authors = new ArrayList<>();
+        authorRepository.findAll(PageRequest.of(0,5)).getContent().forEach(author -> {
             authors.add(mapper.convertValue(author, Author.class));
         });
         return authors;

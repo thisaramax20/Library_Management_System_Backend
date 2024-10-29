@@ -22,4 +22,5 @@ public class User {
     private String password;
     private String email;
     private LocalDate joinedOn;
+    private Integer countOfBooksIssued;
 }

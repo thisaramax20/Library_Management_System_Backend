@@ -8,6 +8,8 @@ import edu.icet.crm.repository.BookRepository;
 import edu.icet.crm.service.BookService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -67,7 +69,18 @@ public class BookServiceImpl implements BookService {
         List<Book> books = new ArrayList<>();
         bookRepository.findAll().forEach(book -> {
             Book book1 = mapper.convertValue(book, Book.class);
-            book1.setAuthorId(book.getAuthor().getAuthorId());
+            book1.setAuthorName(book.getAuthor().getName());
+            books.add(book1);
+        });
+        return books;
+    }
+
+    @Override
+    public List<Book> getFirstFive() {
+        List<Book> books = new ArrayList<>();
+        bookRepository.findAll(PageRequest.of(0,5)).getContent().forEach(book -> {
+            Book book1 = mapper.convertValue(book, Book.class);
+            book1.setAuthorName(book.getAuthor().getName());
             books.add(book1);
         });
         return books;
@@ -78,7 +91,7 @@ public class BookServiceImpl implements BookService {
         ArrayList<Book> books = new ArrayList<>();
         bookRepository.findByCategory(category).forEach(book -> {
             Book book1 = mapper.convertValue(book, Book.class);
-            book1.setAuthorId(book.getAuthor().getAuthorId());
+            book1.setAuthorName(book.getAuthor().getName());
             books.add(book1);
         });
         return books;
@@ -89,9 +102,19 @@ public class BookServiceImpl implements BookService {
         ArrayList<Book> books = new ArrayList<>();
         bookRepository.findByState(state).forEach(book -> {
             Book book1 = mapper.convertValue(book, Book.class);
-            book1.setAuthorId(book.getAuthor().getAuthorId());
+            book1.setAuthorName(book.getAuthor().getName());
             books.add(book1);
         });
+        return books;
+    }
+
+    @Override
+    public List<Book> getTopChoiceFive() {
+        ArrayList<Book> books = new ArrayList<>();
+        bookRepository.findAll(PageRequest.of(
+                0,5,
+                Sort.by(Sort.Direction.DESC,"countOfBorrowed"))).
+                forEach(book -> books.add(mapper.convertValue(book, Book.class)));
         return books;
     }
 }

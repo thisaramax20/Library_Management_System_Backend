@@ -27,8 +27,10 @@ public class IssueBooksServiceImpl implements IssueBooksService {
     private final BookRepository bookRepository;
     private final ObjectMapper mapper;
     private final String word = "ongoing";
+    private final String word2 = "overdue";
 
     @Override
+    @Transactional
     public void save(IssueBooks books) {
         edu.icet.crm.entity.IssueBooks issueBooks = mapper.convertValue(books, edu.icet.crm.entity.IssueBooks.class);
         User byUsername = userRepository.findByUsername(books.getUserId());
@@ -44,6 +46,7 @@ public class IssueBooksServiceImpl implements IssueBooksService {
             Integer countOfBorrowed = byBookCode.getCountOfBorrowed();
             if (countOfBorrowed!=null) byBookCode.setCountOfBorrowed(countOfBorrowed+1);
             else byBookCode.setCountOfBorrowed(1);
+            byBookCode.setState("issued");
             bookRepository.save(byBookCode);
         }
     }
@@ -58,10 +61,42 @@ public class IssueBooksServiceImpl implements IssueBooksService {
                 issueBooks2.setBookId(issueBooks1.getBook().getBookCode());
                 issueBooks2.setUserId(issueBooks1.getUser().getUsername());
                 issueBooks2.setIssuedOn(issueBooks1.getId().getIssuedOn());
+                issueBooks2.setBookTitle(issueBooks1.getBook().getTitle());
+                issueBooks2.setUserName(issueBooks1.getUser().getName());
                 issueBooks.add(issueBooks2);
             });
         }
         return issueBooks;
+    }
+
+    @Override
+    public List<IssueBooks> getAllOverdueRecords() {
+        ArrayList<IssueBooks> issueBooks = new ArrayList<>();
+        List<edu.icet.crm.entity.IssueBooks> ongoing = issueBooksRepository.findByFineStatusAndStatus(word2,word);
+        if (!ongoing.isEmpty()) {
+            ongoing.forEach(issueBooks1 -> {
+                IssueBooks issueBooks2 = mapper.convertValue(issueBooks1, IssueBooks.class);
+                issueBooks2.setBookId(issueBooks1.getBook().getBookCode());
+                issueBooks2.setUserId(issueBooks1.getUser().getUsername());
+                issueBooks2.setIssuedOn(issueBooks1.getId().getIssuedOn());
+                issueBooks.add(issueBooks2);
+            });
+        }
+        return issueBooks;
+    }
+
+    @Override
+    public Integer countOfOngoing() {
+        List<IssueBooks> allOngoingRecords = getAllOngoingRecords();
+        if (!allOngoingRecords.isEmpty()) return allOngoingRecords.size();
+        return null;
+    }
+
+    @Override
+    public Integer countOfOverdue() {
+        List<IssueBooks> allOverdueRecords = getAllOverdueRecords();
+        if (!allOverdueRecords.isEmpty()) return allOverdueRecords.size();
+        return null;
     }
 
     @Override
@@ -97,7 +132,7 @@ public class IssueBooksServiceImpl implements IssueBooksService {
                 findByExpectedOnBeforeAndStatus(today,word);
         for (edu.icet.crm.entity.IssueBooks lateBooks : byExpectedOnBefore){
             long overdueDays = today.toEpochDay() - lateBooks.getExpectedOn().toEpochDay();
-            lateBooks.setFineStatus("overdue");
+            lateBooks.setFineStatus(word2);
             lateBooks.setFine(overdueDays*100.00);
             issueBooksRepository.save(lateBooks);
         }

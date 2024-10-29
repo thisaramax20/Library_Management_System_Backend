@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/author")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthorController {
     private final AuthorService authorService;
 
@@ -22,6 +23,11 @@ public class AuthorController {
     @GetMapping("/get-all")
     public List<Author> getAll(){
         return authorService.getAll();
+    }
+
+    @GetMapping("/get-first-five")
+    public List<Author> getFirstFive(){
+        return authorService.getFirstFive();
     }
 
     @GetMapping("/get-all-books-by-author/{id}")
