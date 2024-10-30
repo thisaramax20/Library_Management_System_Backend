@@ -2,6 +2,7 @@ package edu.icet.crm.controller;
 import edu.icet.crm.dto.User;
 import edu.icet.crm.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public void saveUser(@RequestBody User user){
         userService.save(user);
     }

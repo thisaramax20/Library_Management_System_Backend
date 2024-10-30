@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class BookServiceImpl implements BookService {
         Author byAuthorId = authorRepository.findByAuthorId(book.getAuthorId());
         if (byAuthorId!=null) {
             book1.setAuthor(byAuthorId);
+            book1.setState("available");
 
             if(byAuthorId.getBooks()==null) byAuthorId.setBooks(new HashSet<>());
             byAuthorId.getBooks().add(book1);
@@ -114,7 +116,15 @@ public class BookServiceImpl implements BookService {
         bookRepository.findAll(PageRequest.of(
                 0,5,
                 Sort.by(Sort.Direction.DESC,"countOfBorrowed"))).
-                forEach(book -> books.add(mapper.convertValue(book, Book.class)));
+                forEach(book -> {
+                    Book book1 = mapper.convertValue(book, Book.class);
+                    if (book.getImageData()!=null) {
+                        String base64Image = Base64.getEncoder().encodeToString(book.getImageData());
+                        String base64DataUrl = "data:image/jpeg;base64," + base64Image;
+                        book1.setSrc(base64DataUrl);
+                    }
+                    books.add(book1);
+                });
         return books;
     }
 
