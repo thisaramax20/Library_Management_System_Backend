@@ -4,6 +4,7 @@ import edu.icet.crm.dto.Author;
 import edu.icet.crm.dto.Book;
 import edu.icet.crm.service.AuthorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addAuthor(@RequestBody Author author){
         authorService.save(author);
     }

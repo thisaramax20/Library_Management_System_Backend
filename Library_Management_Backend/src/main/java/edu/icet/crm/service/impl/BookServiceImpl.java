@@ -83,6 +83,11 @@ public class BookServiceImpl implements BookService {
         bookRepository.findAll(PageRequest.of(0,5)).getContent().forEach(book -> {
             Book book1 = mapper.convertValue(book, Book.class);
             book1.setAuthorName(book.getAuthor().getName());
+            if (book.getImageData()!=null) {
+                String base64Image = Base64.getEncoder().encodeToString(book.getImageData());
+                String base64DataUrl = "data:image/jpeg;base64," + base64Image;
+                book1.setSrc(base64DataUrl);
+            }
             books.add(book1);
         });
         return books;
