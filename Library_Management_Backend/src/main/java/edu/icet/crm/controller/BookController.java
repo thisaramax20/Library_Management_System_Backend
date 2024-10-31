@@ -1,6 +1,7 @@
 package edu.icet.crm.controller;
 
 import edu.icet.crm.dto.Book;
+import edu.icet.crm.dto.BookByCategoryCount;
 import edu.icet.crm.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -71,5 +72,10 @@ public class BookController {
     @GetMapping("/get-by-id/{id}")
     public Book getById(@PathVariable String id){
         return bookService.getByBookId(id);
+    }
+
+    @GetMapping("/get-count-by-category")
+    public List<BookByCategoryCount> getCountByCategory(){
+        return bookService.getCountOfBooks();
     }
 }

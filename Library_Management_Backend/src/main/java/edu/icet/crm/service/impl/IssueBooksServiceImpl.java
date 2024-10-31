@@ -1,7 +1,9 @@
 package edu.icet.crm.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.icet.crm.dto.BookCheckoutCountByCategory;
 import edu.icet.crm.dto.IssueBooks;
+import edu.icet.crm.dto.TotalFineByMonth;
 import edu.icet.crm.entity.Book;
 import edu.icet.crm.entity.IssueBookId;
 import edu.icet.crm.entity.User;
@@ -152,5 +154,31 @@ public class IssueBooksServiceImpl implements IssueBooksService {
             });
         }
         return issueBooks;
+    }
+
+    @Override
+    public List<BookCheckoutCountByCategory> getCheckoutCountByCategory() {
+        LocalDate now = LocalDate.now();
+        ArrayList<BookCheckoutCountByCategory> count = new ArrayList<>();
+        count.add(new BookCheckoutCountByCategory("Fiction",
+                issueBooksRepository.countOfBooksCheckOutByCategory(now,"Fiction")));
+        count.add(new BookCheckoutCountByCategory("Education",
+                issueBooksRepository.countOfBooksCheckOutByCategory(now,"Education")));
+        count.add(new BookCheckoutCountByCategory("Social",
+                issueBooksRepository.countOfBooksCheckOutByCategory(now,"Social"))) ;
+        return count;
+    }
+
+    @Override
+    public List<TotalFineByMonth> getTotalFineByMonth() {
+        LocalDate date = LocalDate.now();
+        ArrayList<TotalFineByMonth> fine = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            int monthValue = date.minusMonths(i).getMonthValue();
+            int year = date.getYear();
+            fine.add(new TotalFineByMonth(date.minusMonths(i).getMonth().name(),
+                    issueBooksRepository.totalFineForMonth(monthValue,year)));
+        }
+        return fine;
     }
 }

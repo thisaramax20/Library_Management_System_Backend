@@ -1,6 +1,5 @@
 package edu.icet.crm.repository;
 
-import edu.icet.crm.entity.User;
 import edu.icet.crm.entity.UserLoginActivity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

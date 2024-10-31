@@ -2,6 +2,8 @@ package edu.icet.crm.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.crm.dto.User;
+import edu.icet.crm.dto.UserJoinedCountForPastMonths;
+import edu.icet.crm.dto.UserLoginCountForPastDays;
 import edu.icet.crm.entity.UserLoginActivity;
 import edu.icet.crm.repository.IssueBooksRepository;
 import edu.icet.crm.repository.UserLoginActivityRepository;
@@ -105,5 +107,30 @@ public class UserServiceImpl implements UserService {
         edu.icet.crm.entity.User byUsername = userRepository.findByUsername(username);
         if (byUsername!=null) return mapper.convertValue(byUsername,User.class);
         return null;
+    }
+
+    @Override
+    public List<UserLoginCountForPastDays> getPastLoginCount() {
+        LocalDate date = LocalDate.now();
+        ArrayList<UserLoginCountForPastDays> count = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            LocalDate previous = date.minusDays(i);
+            count.add(new UserLoginCountForPastDays(previous,userLoginActivityRepository.findByDate(previous).size()));
+        }
+        return count;
+    }
+
+    @Override
+    public List<UserJoinedCountForPastMonths> getPastJoinedOnCount() {
+        LocalDate date = LocalDate.now();
+        ArrayList<UserJoinedCountForPastMonths> count = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            LocalDate previous = date.minusMonths(i);
+            int month = previous.getMonthValue();
+            int year = previous.getYear();
+            count.add(new UserJoinedCountForPastMonths(previous.getMonth().name(),
+                    userRepository.countJoinedOnByPastMonths(month,year)));
+        }
+        return count;
     }
 }

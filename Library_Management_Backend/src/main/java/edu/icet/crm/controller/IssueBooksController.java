@@ -1,6 +1,8 @@
 package edu.icet.crm.controller;
 
+import edu.icet.crm.dto.BookCheckoutCountByCategory;
 import edu.icet.crm.dto.IssueBooks;
+import edu.icet.crm.dto.TotalFineByMonth;
 import edu.icet.crm.service.IssueBooksService;
 import edu.icet.crm.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +58,15 @@ public class IssueBooksController {
         map.put("overdue",issueBooksService.countOfOverdue());
         map.put("totalVisitors", userService.getUserVisitedCount(LocalDate.now()));
         return map;
+    }
+
+    @GetMapping("/get-checkout-count-by-category")
+    public List<BookCheckoutCountByCategory> getCheckoutCountByCategory(){
+        return issueBooksService.getCheckoutCountByCategory();
+    }
+
+    @GetMapping("/total-fine-by-month")
+    public List<TotalFineByMonth> getTotalFineBiMonthly(){
+        return issueBooksService.getTotalFineByMonth();
     }
 }

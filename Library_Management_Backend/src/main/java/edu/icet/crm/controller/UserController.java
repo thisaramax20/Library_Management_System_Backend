@@ -1,5 +1,7 @@
 package edu.icet.crm.controller;
 import edu.icet.crm.dto.User;
+import edu.icet.crm.dto.UserJoinedCountForPastMonths;
+import edu.icet.crm.dto.UserLoginCountForPastDays;
 import edu.icet.crm.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,5 +51,15 @@ public class UserController {
     @GetMapping("/get-by-username/{username}")
     public User getByUsername(@PathVariable String username){
         return userService.getByUserName(username);
+    }
+
+    @GetMapping("/login-count-for-past-days")
+    public List<UserLoginCountForPastDays> getCountForPastDays(){
+        return userService.getPastLoginCount();
+    }
+
+    @GetMapping("/join-count-for-past")
+    public List<UserJoinedCountForPastMonths> getJoinCountForPastMonths(){
+        return userService.getPastJoinedOnCount();
     }
 }

@@ -1,6 +1,8 @@
 package edu.icet.crm.service;
 
 import edu.icet.crm.dto.Book;
+import edu.icet.crm.dto.BookByCategoryCount;
+
 import java.util.List;
 
 public interface BookService {
@@ -13,4 +15,5 @@ public interface BookService {
     List<Book> getByState(String state);
     List<Book> getTopChoiceFive();
     Book getByBookId(String id);
+    List<BookByCategoryCount> getCountOfBooks();
 }

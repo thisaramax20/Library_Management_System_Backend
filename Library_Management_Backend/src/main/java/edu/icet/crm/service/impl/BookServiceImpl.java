@@ -2,6 +2,7 @@ package edu.icet.crm.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.crm.dto.Book;
+import edu.icet.crm.dto.BookByCategoryCount;
 import edu.icet.crm.entity.Author;
 import edu.icet.crm.repository.AuthorRepository;
 import edu.icet.crm.repository.BookRepository;
@@ -23,6 +24,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final ObjectMapper mapper;
     private final AuthorRepository authorRepository;
+    private static final String imagePrefix = "data:image/jpeg;base64,";
 
     @Override
     @Transactional
@@ -85,7 +87,7 @@ public class BookServiceImpl implements BookService {
             book1.setAuthorName(book.getAuthor().getName());
             if (book.getImageData()!=null) {
                 String base64Image = Base64.getEncoder().encodeToString(book.getImageData());
-                String base64DataUrl = "data:image/jpeg;base64," + base64Image;
+                String base64DataUrl = imagePrefix + base64Image;
                 book1.setSrc(base64DataUrl);
             }
             books.add(book1);
@@ -101,7 +103,7 @@ public class BookServiceImpl implements BookService {
             book1.setAuthorName(book.getAuthor().getName());
             if (book.getImageData()!=null) {
                 String base64Image = Base64.getEncoder().encodeToString(book.getImageData());
-                String base64DataUrl = "data:image/jpeg;base64," + base64Image;
+                String base64DataUrl = imagePrefix + base64Image;
                 book1.setSrc(base64DataUrl);
             }
             books.add(book1);
@@ -117,7 +119,7 @@ public class BookServiceImpl implements BookService {
             book1.setAuthorName(book.getAuthor().getName());
             if (book.getImageData()!=null) {
                 String base64Image = Base64.getEncoder().encodeToString(book.getImageData());
-                String base64DataUrl = "data:image/jpeg;base64," + base64Image;
+                String base64DataUrl = imagePrefix + base64Image;
                 book1.setSrc(base64DataUrl);
             }
             books.add(book1);
@@ -135,7 +137,7 @@ public class BookServiceImpl implements BookService {
                     Book book1 = mapper.convertValue(book, Book.class);
                     if (book.getImageData()!=null) {
                         String base64Image = Base64.getEncoder().encodeToString(book.getImageData());
-                        String base64DataUrl = "data:image/jpeg;base64," + base64Image;
+                        String base64DataUrl = imagePrefix + base64Image;
                         book1.setSrc(base64DataUrl);
                     }
                     books.add(book1);
@@ -148,5 +150,14 @@ public class BookServiceImpl implements BookService {
         edu.icet.crm.entity.Book byBookCode = bookRepository.findByBookCode(id);
         if (byBookCode!=null) return mapper.convertValue(byBookCode,Book.class);
         return null;
+    }
+
+    @Override
+    public List<BookByCategoryCount> getCountOfBooks() {
+        ArrayList<BookByCategoryCount> bookByCategoryCounts = new ArrayList<>();
+        bookByCategoryCounts.add(new BookByCategoryCount("Education",getByCategory("Education").size()));
+        bookByCategoryCounts.add(new BookByCategoryCount("Fiction",getByCategory("Fiction").size()));
+        bookByCategoryCounts.add(new BookByCategoryCount("Social",getByCategory("Social").size()));
+        return bookByCategoryCounts;
     }
 }
