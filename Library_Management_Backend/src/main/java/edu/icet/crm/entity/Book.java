@@ -18,6 +18,7 @@ public class Book {
     @Column(unique = true)
     private String bookCode;
     private String title;
+    @Column(unique = true)
     private String isbn;
     private String category;
     private String state;
