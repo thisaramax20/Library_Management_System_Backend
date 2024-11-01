@@ -46,4 +46,9 @@ public class AuthorController {
     public void update(@RequestBody Author author){
         authorService.update(author);
     }
+
+    @GetMapping("/get-by-id/{id}")
+    public Author getById(@PathVariable String id){
+        return authorService.getById(id);
+    }
 }

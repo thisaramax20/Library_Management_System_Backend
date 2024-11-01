@@ -52,8 +52,11 @@ public class BookServiceImpl implements BookService {
     public void update(Book book) {
         edu.icet.crm.entity.Book byBookCode = bookRepository.findByBookCode(book.getBookCode());
         if (byBookCode!=null) {
-            book.setId(byBookCode.getId());
-            bookRepository.save(mapper.convertValue(book,edu.icet.crm.entity.Book.class));
+            byBookCode.setTitle(book.getTitle());
+            byBookCode.setCategory(book.getCategory());
+            Author author = byBookCode.getAuthor();
+            if (author!=null) author.getBooks().add(byBookCode);
+            bookRepository.save(byBookCode);
         }
     }
 

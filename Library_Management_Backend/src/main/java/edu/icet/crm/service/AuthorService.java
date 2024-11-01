@@ -13,4 +13,5 @@ public interface AuthorService {
     List<Author> getAll();
     List<Author> getFirstFive();
     List<Book> getAllBooksByAuthor(String authorId);
+    Author getById(String id);
 }

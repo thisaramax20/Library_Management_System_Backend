@@ -70,4 +70,9 @@ public class AuthorServiceImpl implements AuthorService {
         if (byAuthorId!=null) byAuthorId.getBooks().forEach(book -> books.add(mapper.convertValue(book, Book.class)));
         return books;
     }
+
+    @Override
+    public Author getById(String id) {
+        return mapper.convertValue(authorRepository.findByAuthorId(id), Author.class);
+    }
 }

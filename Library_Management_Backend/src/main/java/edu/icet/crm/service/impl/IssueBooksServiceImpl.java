@@ -109,9 +109,12 @@ public class IssueBooksServiceImpl implements IssueBooksService {
                 byUsername.getId(), byBookCode.getId(), books.getIssuedOn())
         );
         byId.ifPresent(issueBooksRepository::delete);
+        byBookCode.setState("available");
+        bookRepository.save(byBookCode);
     }
 
     @Override
+    @Transactional
     public void markRecordComplete(IssueBooks issueBooks) {
         User byUsername = userRepository.findByUsername(issueBooks.getUserId());
         Book byBookCode = bookRepository.findByBookCode(issueBooks.getBookId());
@@ -122,6 +125,8 @@ public class IssueBooksServiceImpl implements IssueBooksService {
             edu.icet.crm.entity.IssueBooks issueBooks1 = byId.get();
             issueBooks1.setStatus("OK");
             issueBooksRepository.save(issueBooks1);
+            byBookCode.setState("available");
+            bookRepository.save(byBookCode);
         }
     }
 

@@ -46,7 +46,7 @@ public class IssueBooksController {
         issueBooksService.markRecordComplete(books);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public void delete(@RequestBody IssueBooks books){
         issueBooksService.deleteIssueBookRecord(books);
     }
