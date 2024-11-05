@@ -11,6 +11,7 @@ import edu.icet.crm.repository.BookRepository;
 import edu.icet.crm.repository.IssueBooksRepository;
 import edu.icet.crm.repository.UserRepository;
 import edu.icet.crm.service.IssueBooksService;
+import edu.icet.crm.service.PreOrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +28,7 @@ public class IssueBooksServiceImpl implements IssueBooksService {
     private final IssueBooksRepository issueBooksRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
+    private final PreOrderService preOrderService;
     private final ObjectMapper mapper;
     private final String word = "ongoing";
     private final String word2 = "overdue";
@@ -49,6 +51,7 @@ public class IssueBooksServiceImpl implements IssueBooksService {
             if (countOfBorrowed!=null) byBookCode.setCountOfBorrowed(countOfBorrowed+1);
             else byBookCode.setCountOfBorrowed(1);
             byBookCode.setState("issued");
+            preOrderService.delete(byUsername.getUsername(),byBookCode.getBookCode());
             bookRepository.save(byBookCode);
         }
     }

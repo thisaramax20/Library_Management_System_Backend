@@ -5,6 +5,7 @@ import edu.icet.crm.dto.UserJoinedCountForPastMonths;
 import edu.icet.crm.dto.UserLoginCountForPastDays;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 public interface UserService {
@@ -14,9 +15,10 @@ public interface UserService {
     List<User> getAll();
     List<User> getFirstFive();
     List<User> getAllByJoinedDate(LocalDate localDate);
-    boolean validateUserLogin(String username,String password);
+    HashMap<String,String> validateUserLogin(String username, String password);
     int getUserVisitedCount(LocalDate localDate);
     User getByUserName(String username);
     List<UserLoginCountForPastDays> getPastLoginCount();
     List<UserJoinedCountForPastMonths> getPastJoinedOnCount();
+
 }

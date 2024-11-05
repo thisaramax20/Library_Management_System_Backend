@@ -14,6 +14,6 @@ import java.time.LocalDateTime;
 public class PreOrder {
     private Integer id;
     private String userId;
-    private String bookId;
+    private String bookCode;
     private LocalDateTime orderTime;
 }

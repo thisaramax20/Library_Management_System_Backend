@@ -1,5 +1,6 @@
 package edu.icet.crm.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.crm.dto.PreOrder;
 import edu.icet.crm.entity.Book;
 import edu.icet.crm.entity.User;
@@ -22,17 +23,15 @@ public class PreOrderServiceImpl implements PreOrderService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final EmailSending emailSending;
+    private final ObjectMapper mapper;
 
     @Override
     public void save(PreOrder preOrder) {
         User byUsername = userRepository.findByUsername(preOrder.getUserId());
-        Book byBookCode = bookRepository.findByBookCode(preOrder.getBookId());
+        Book byBookCode = bookRepository.findByBookCode(preOrder.getBookCode());
         if (byBookCode==null || byUsername==null) return;
-        preOrderRepository.save(new edu.icet.crm.entity.PreOrder(null,
-                byUsername,
-                byBookCode,
-                LocalDateTime.now()
-        ));
+        byBookCode.setState("pre-ordered");
+        preOrderRepository.save(new edu.icet.crm.entity.PreOrder(null,byUsername,byBookCode,LocalDateTime.now()));
         emailSending.sendPreOrderEmail(byUsername.getEmail(),byBookCode.getTitle());
     }
 

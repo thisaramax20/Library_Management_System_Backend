@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,5 +63,11 @@ public class UserController {
     @GetMapping("/join-count-for-past")
     public List<UserJoinedCountForPastMonths> getJoinCountForPastMonths(){
         return userService.getPastJoinedOnCount();
+    }
+
+    @PostMapping("/validate-login")
+    public Map<String,String> validateLogin(@RequestParam("username") String username,
+                                            @RequestParam("password") String password ){
+        return userService.validateUserLogin(username,password);
     }
 }

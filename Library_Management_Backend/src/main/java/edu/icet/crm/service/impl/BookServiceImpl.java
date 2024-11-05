@@ -151,7 +151,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getByBookId(String id) {
         edu.icet.crm.entity.Book byBookCode = bookRepository.findByBookCode(id);
-        if (byBookCode!=null) return mapper.convertValue(byBookCode,Book.class);
+        if (byBookCode!=null) {
+            Book book = mapper.convertValue(byBookCode, Book.class);
+            book.setAuthorName(byBookCode.getAuthor().getName());
+        }
         return null;
     }
 

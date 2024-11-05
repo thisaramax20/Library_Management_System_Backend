@@ -9,12 +9,14 @@ import edu.icet.crm.repository.IssueBooksRepository;
 import edu.icet.crm.repository.UserLoginActivityRepository;
 import edu.icet.crm.repository.UserRepository;
 import edu.icet.crm.service.UserService;
+import edu.icet.crm.util.EncryptPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,11 +26,13 @@ public class UserServiceImpl implements UserService {
     private final UserLoginActivityRepository userLoginActivityRepository;
     private final IssueBooksRepository issueBooksRepository;
     private final ObjectMapper mapper;
+    private final EncryptPassword encryptPassword = EncryptPassword.getInstance();
 
     @Override
     public void save(User user) {
         edu.icet.crm.entity.User user1 = mapper.convertValue(user, edu.icet.crm.entity.User.class);
-        user1.setPassword(user.getNic());
+        user1.setPassword(encryptPassword.hashingPassword(user.getNic()));
+        user1.setJoinedOn(LocalDate.now());
         Integer maxId = userRepository.findMaxId();
         if (maxId != null) {
             user1.setUsername("US-" + ++maxId);
@@ -89,12 +93,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean validateUserLogin(String username, String password) {
+    public HashMap<String,String> validateUserLogin(String username, String password) {
+        HashMap<String, String> hashMap = new HashMap<>();
         edu.icet.crm.entity.User byUsername = userRepository.findByUsername(username);
-        if(byUsername.getPassword().equals(password)){
-            userLoginActivityRepository.save(new UserLoginActivity(null,username,LocalDate.now()));
-            return true;
-        }else return false;
+        if(byUsername!=null){
+            if (encryptPassword.checkPassword(password,byUsername.getPassword())){
+                hashMap.put("auth","yes");
+                hashMap.put("type","US");
+                hashMap.put("name", byUsername.getName());
+                userLoginActivityRepository.save(new UserLoginActivity(null,username,LocalDate.now()));
+                return hashMap;
+            }else {
+                hashMap.put("auth","no");
+                hashMap.put("type","US");
+                hashMap.put("message","password incorrect");
+                return hashMap;
+            }
+        }else {
+          hashMap.put("auth","no");
+          hashMap.put("type","US");
+          hashMap.put("message","user not found");
+          return hashMap;
+        }
     }
 
     @Override
