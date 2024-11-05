@@ -20,16 +20,18 @@ public class BookController {
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addBook(@RequestParam("image") MultipartFile image, @RequestParam("title") String title,
+    public void addBook(@RequestParam(value = "image",required = false) MultipartFile image, @RequestParam("title") String title,
                         @RequestParam("author") String author,
                         @RequestParam("category") String category,
                         @RequestParam("isbn") String isbn){
         byte[] imageData;
-        try {
-            imageData = image.getBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        if (image!=null){
+            try {
+                imageData = image.getBytes();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else imageData = null;
         bookService.save(new Book(null,null,
                 title,isbn,category,null,null,imageData,null,author,null));
     }

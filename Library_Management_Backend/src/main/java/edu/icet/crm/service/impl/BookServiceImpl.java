@@ -154,6 +154,7 @@ public class BookServiceImpl implements BookService {
         if (byBookCode!=null) {
             Book book = mapper.convertValue(byBookCode, Book.class);
             book.setAuthorName(byBookCode.getAuthor().getName());
+            return book;
         }
         return null;
     }
