@@ -2,12 +2,16 @@ package edu.icet.crm.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.crm.dto.Admin;
+import edu.icet.crm.entity.UserLoginActivity;
 import edu.icet.crm.repository.AdminRepository;
 import edu.icet.crm.service.AdminService;
+import edu.icet.crm.util.EncryptPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,12 +19,13 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final ObjectMapper mapper;
+    private final EncryptPassword encryptPassword = EncryptPassword.getInstance();
 
     @Override
     public void save(Admin admin) {
         edu.icet.crm.entity.Admin admin1 = mapper.convertValue(admin, edu.icet.crm.entity.Admin.class);
-        admin1.setPassword(admin.getNic());
         Integer maxId = adminRepository.findMaxId();
+        admin1.setPassword(encryptPassword.hashingPassword(admin.getPassword()));
         if (maxId != null) {
             admin1.setUsername("AD-" + ++maxId);
         } else {
@@ -33,8 +38,11 @@ public class AdminServiceImpl implements AdminService {
     public void update(Admin admin) {
         edu.icet.crm.entity.Admin byUsername = adminRepository.findByUsername(admin.getUsername());
         if (byUsername!=null){
-            admin.setId(byUsername.getId());
-            adminRepository.save(mapper.convertValue(admin,edu.icet.crm.entity.Admin.class));
+            byUsername.setNic(admin.getNic());
+            byUsername.setDob(admin.getDob());
+            byUsername.setName(admin.getName());
+            byUsername.setAddress(admin.getAddress());
+            adminRepository.save(byUsername);
         }
     }
 
@@ -54,4 +62,32 @@ public class AdminServiceImpl implements AdminService {
         return admins;
     }
 
+    @Override
+    public HashMap<String, String> validateAdminLogin(String username, String password) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        edu.icet.crm.entity.Admin byUsername = adminRepository.findByUsername(username);
+        if(byUsername!=null){
+            if (encryptPassword.checkPassword(password,byUsername.getPassword())){
+                hashMap.put("auth","yes");
+                hashMap.put("type","AD");
+                hashMap.put("name", byUsername.getName());
+                return hashMap;
+            }else {
+                hashMap.put("auth","no");
+                hashMap.put("type","AD");
+                hashMap.put("message","password incorrect");
+                return hashMap;
+            }
+        }else {
+            hashMap.put("auth","no");
+            hashMap.put("type","AD");
+            hashMap.put("message","user not found");
+            return hashMap;
+        }
+    }
+
+    @Override
+    public Admin getById(String username) {
+        return mapper.convertValue(adminRepository.findByUsername(username), Admin.class);
+    }
 }
