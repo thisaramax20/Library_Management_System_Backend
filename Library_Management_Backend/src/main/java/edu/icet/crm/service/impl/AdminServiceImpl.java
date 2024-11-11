@@ -25,7 +25,7 @@ public class AdminServiceImpl implements AdminService {
     public void save(Admin admin) {
         edu.icet.crm.entity.Admin admin1 = mapper.convertValue(admin, edu.icet.crm.entity.Admin.class);
         Integer maxId = adminRepository.findMaxId();
-        admin1.setPassword(encryptPassword.hashingPassword(admin.getPassword()));
+        admin1.setPassword(encryptPassword.hashingPassword(admin.getNic()));
         if (maxId != null) {
             admin1.setUsername("AD-" + ++maxId);
         } else {
