@@ -6,6 +6,7 @@ import edu.icet.crm.dto.TotalFineByMonth;
 import edu.icet.crm.service.IssueBooksService;
 import edu.icet.crm.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class IssueBooksController {
     private final UserService userService;
 
     @PostMapping("/save")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void save(@RequestBody IssueBooks books){
         issueBooksService.save(books);
     }

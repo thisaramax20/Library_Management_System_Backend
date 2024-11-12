@@ -3,6 +3,7 @@ package edu.icet.crm.controller;
 import edu.icet.crm.dto.PreOrder;
 import edu.icet.crm.service.PreOrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class PreOrderController {
     private final PreOrderService preOrderService;
 
     @PostMapping("/save")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void save(@RequestBody PreOrder preOrder){
         preOrderService.save(preOrder);
     }

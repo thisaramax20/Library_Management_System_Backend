@@ -2,14 +2,12 @@ package edu.icet.crm.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.crm.dto.Admin;
-import edu.icet.crm.entity.UserLoginActivity;
 import edu.icet.crm.repository.AdminRepository;
 import edu.icet.crm.service.AdminService;
 import edu.icet.crm.util.EncryptPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

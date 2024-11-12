@@ -38,13 +38,13 @@ public class PreOrderServiceImpl implements PreOrderService {
     @Override
     public List<PreOrder> getAll() {
         ArrayList<PreOrder> preOrders = new ArrayList<>();
-        preOrderRepository.findAll().forEach(preOrder -> {
+        preOrderRepository.findAll().forEach(preOrder ->
             preOrders.add(new PreOrder(preOrder.getId(),
                     preOrder.getUser().getUsername(),
                     preOrder.getBook().getBookCode(),
                     preOrder.getOrderTime()
-            ));
-        });
+            ))
+        );
         return preOrders;
     }
 
@@ -62,10 +62,10 @@ public class PreOrderServiceImpl implements PreOrderService {
         User byUsername = userRepository.findByUsername(userId);
         List<edu.icet.crm.entity.PreOrder> byUserId = preOrderRepository.findByUserId(byUsername.getId());
         ArrayList<PreOrder> preOrders = new ArrayList<>();
-        byUserId.forEach(preOrder -> {
+        byUserId.forEach(preOrder ->
             preOrders.add(new PreOrder(preOrder.getId(),preOrder.getUser().getUsername(),
-                    preOrder.getBook().getBookCode(),preOrder.getOrderTime()));
-        });
+                    preOrder.getBook().getBookCode(),preOrder.getOrderTime()))
+        );
         return preOrders;
     }
 }

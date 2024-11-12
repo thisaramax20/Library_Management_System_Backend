@@ -48,18 +48,15 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> getAll() {
         ArrayList<Author> authors = new ArrayList<>();
-        authorRepository.findAll().forEach(author -> {
-            authors.add(mapper.convertValue(author, Author.class));
-        });
+        authorRepository.findAll().forEach(author -> authors.add(mapper.convertValue(author, Author.class)));
         return authors;
     }
 
     @Override
     public List<Author> getFirstFive() {
         ArrayList<Author> authors = new ArrayList<>();
-        authorRepository.findAll(PageRequest.of(0,5)).getContent().forEach(author -> {
-            authors.add(mapper.convertValue(author, Author.class));
-        });
+        authorRepository.findAll(PageRequest.of(0,5)).getContent().
+                forEach(author -> authors.add(mapper.convertValue(author, Author.class)));
         return authors;
     }
 
