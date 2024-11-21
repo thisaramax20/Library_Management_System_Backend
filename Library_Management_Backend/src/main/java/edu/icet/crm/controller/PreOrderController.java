@@ -16,7 +16,7 @@ public class PreOrderController {
     private final PreOrderService preOrderService;
 
     @PostMapping("/save")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody PreOrder preOrder){
         preOrderService.save(preOrder);
     }

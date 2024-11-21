@@ -23,7 +23,7 @@ public class IssueBooksController {
     private final UserService userService;
 
     @PostMapping("/save")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody IssueBooks books){
         issueBooksService.save(books);
     }
